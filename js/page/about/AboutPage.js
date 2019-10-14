@@ -32,7 +32,9 @@ export default class AboutPage extends Component {
       ...this.params,
       navigation:this.props.navigation,
       flagAbout:FLAG_ABOUT.flag_about,
-    },data=>this.setState({...data}));
+    },
+    data=>this.setState({...data})
+  );
     this.state={
       data:github_app_config,
     }
@@ -65,7 +67,7 @@ export default class AboutPage extends Component {
 
       case MORE_MENU.About_Author:
         RouteName = 'AboutAuthorPage';
-    
+
         break;
 
     }

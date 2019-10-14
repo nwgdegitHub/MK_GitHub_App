@@ -25,8 +25,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import {Provider} from 'react-redux';
-import AppNavigator from './navigator/AppNavigator';
-import store from './store'
+import AppNavigator from './navigator/AppNavigator'; //此处AppNavigator并未定义 怎么来的呢? 难道是引入默认导出?
+import store from './store' //还有此处的store
 
 const App = () => {
   return <Provider store={store}>

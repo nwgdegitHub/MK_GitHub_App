@@ -90,9 +90,7 @@ export const RootNavigator = createSwitchNavigator({
     //header:null,
   }
 });
-// export const AppNavigator = createAppContainer(RootNavigator);
-// //export default AppNavigator;
-//
+
 export const middleware = createReactNavigationReduxMiddleware(
 
   state => state.nav,

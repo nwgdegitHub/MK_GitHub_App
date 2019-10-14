@@ -49,6 +49,7 @@ export default class AboutCommon{
       )
       .then(
         config=>{
+          console.log(config)
           if(config){
             this.updateState({
               data:config
@@ -66,7 +67,7 @@ export default class AboutCommon{
   }
 
   getParallaxRenderConfig(params){
-    
+
     let config = {};
     let avtar = typeof(params.avtar)=== 'string' ? {uri: params.avtar} : params.avtar
     config.renderBackground=()=>(

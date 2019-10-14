@@ -46,6 +46,7 @@ export default class MyPage extends Component {
       NavigationUtil.goPage(params,RouteName);
     }
   }
+  
   //使用封装的item
   getItem(menu){
     return ViewUtil.getMenuItem(()=>this.onClick(menu),menu,THEME_COLOR);
@@ -94,8 +95,10 @@ export default class MyPage extends Component {
               style={{marginRight: 10,color: THEME_COLOR,alignSelf: 'center'}}
             />
           </TouchableOpacity>
+
           <View style={GlobalStyles.line}/>
           {this.getItem(MORE_MENU.Tutorial)}
+
           {/*趋势管理*/}
           <Text style={{
             marginLeft: 10,
@@ -107,6 +110,7 @@ export default class MyPage extends Component {
 
           {/*自定义语言*/}
           {this.getItem(MORE_MENU.Custom_Language)}
+
           {/*语言排序*/}
           <View style={GlobalStyles.line}/>
           {this.getItem(MORE_MENU.Sort_Language)}
