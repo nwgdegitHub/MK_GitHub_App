@@ -73,7 +73,7 @@ class PopularPage extends Component {
     return tabs;
   }
   render(){
-
+    
     const {keys} = this.props;
     let statusBar={
       barStyle:'default',
@@ -84,7 +84,7 @@ class PopularPage extends Component {
     statusBar={statusBar}
     style={{backgroundColor: THEME_COLOR}}/>;
 
-    const TabNavigator = keys.length>0?createAppContainer(createMaterialTopTabNavigator(
+    const TabNavigator = keys.length?createAppContainer(createMaterialTopTabNavigator(
       this._genTabs(),{
         tabBarOptions:{
           tabStyle:styles.tabStyle,

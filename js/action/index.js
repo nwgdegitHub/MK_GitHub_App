@@ -13,5 +13,5 @@ export default {
   onFlushTrendingFavorite,
   onLoadMoreTrendingData,
   onLoadFavoriteData,
-  onLoadLanguage
+  onLoadLanguage,
 }

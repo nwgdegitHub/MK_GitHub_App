@@ -49,25 +49,35 @@ import FavoriteUtil from '../util/FavoriteUtil';
 
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
+import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
+import ArrayUtil from '../util/ArrayUtil';
 
-export default class TrendingPage extends Component {
+class TrendingPage extends Component {
   constructor(props){
     super(props);
-    this.tabNames=['Any','C','C#','PHP','JavaScript'];
+    // this.tabNames=['Any','C','C#','PHP','JavaScript'];
     this.state={
       timeSpan:TimeSpans[0],//打开App默认选中今天
-    }
+    };
+    const {onLoadLanguage} = props;
+    onLoadLanguage(FLAG_LANGUAGE.flag_language);
+    this.preKeys=[];
   }
 
   _genTabs(){
     const tabs = {};
-    this.tabNames.forEach((item,index)=>{
-      tabs[`tab${index}`]={
-        screen:props => <TrendingTabPage {...props} tabLabel={item}/>,//配置路由的时候可以传递参数(实用，但官网没有)
-        navigationOptions:{
-          title:item
+    const {keys} = this.props;
+    this.preKeys=keys;
+    keys.forEach((item,index)=>{
+      if(item.checked){
+        tabs[`tab${index}`]={
+          screen:props => <TrendingTabPage {...props} tabLabel={item.name}/>,//配置路由的时候可以传递参数(实用，但官网没有)
+          navigationOptions:{
+            title:item.name
+          }
         }
       }
+
     })
     return tabs;
   }
@@ -113,7 +123,7 @@ export default class TrendingPage extends Component {
   }
 
   _tabNav(){
-    if(!this.tabNavi){
+    if(!this.tabNavi || !ArrayUtil.isEqual(this.preKeys,this.props.keys)){
       //优化顶部tab 不让他切换时间维度时刷新
       this.tabNavi = createAppContainer(createMaterialTopTabNavigator(
         this._genTabs(),{
@@ -135,6 +145,7 @@ export default class TrendingPage extends Component {
 
   render(){
 
+    const {keys} = this.props;
     let statusBar={
       barStyle:'default',
       backgroundColor:THEME_COLOR,
@@ -144,17 +155,29 @@ export default class TrendingPage extends Component {
     statusBar={statusBar}
     style={{backgroundColor: THEME_COLOR}}/>;
 
-    const TabNavigator = this._tabNav();
+    const TabNavigator = keys.length?this._tabNav():null;
     return <View style={{flex: 1,marginTop: DeviceInfo.isIPhoneX_deprecated?30:0}}>
       {/*{navigationBar}//使用自定义导航栏*/}
       {navigationBar}
-      <TabNavigator/>
+      {TabNavigator && <TabNavigator/> }
+
       {this.renderTrendingDialog()}
     </View>
 
   }
 
 }
+
+const mapPopularStateToProps = state => ({
+  keys:state.language.languages,
+  theme:state.theme.theme,
+});
+
+const mapPopularDispatchToProps = dispatch => ({
+  onLoadLanguage:(flag)=>dispatch(actions.onLoadLanguage(flag)),
+});
+
+export default connect(mapPopularStateToProps,mapPopularDispatchToProps)(TrendingPage);
 
 const pageSize = 10;// 设为常量 防止修改
 //自定义组件
