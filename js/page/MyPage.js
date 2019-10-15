@@ -46,7 +46,7 @@ export default class MyPage extends Component {
       NavigationUtil.goPage(params,RouteName);
     }
   }
-  
+
   //使用封装的item
   getItem(menu){
     return ViewUtil.getMenuItem(()=>this.onClick(menu),menu,THEME_COLOR);

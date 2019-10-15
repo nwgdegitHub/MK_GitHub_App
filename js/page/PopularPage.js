@@ -56,7 +56,7 @@ class PopularPage extends Component {
   }
 
   _genTabs(){
-
+    
     const tabs = {};
     const {keys} = this.props;
     keys.forEach((item,index)=>{
@@ -73,7 +73,7 @@ class PopularPage extends Component {
     return tabs;
   }
   render(){
-    
+
     const {keys} = this.props;
     let statusBar={
       barStyle:'default',
