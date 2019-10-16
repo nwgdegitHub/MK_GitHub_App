@@ -42,23 +42,15 @@ export default class MyPage extends Component {
       case MORE_MENU.About_Author:
         RouteName = 'AboutAuthorPage';
         break;
-      // 
-      // case MORE_MENU.Custom_Key:
-      // case MORE_MENU.Custom_Language:
-      // case MORE_MENU.Remove_Key:
-      //   RouteName = 'CustomKeyPage';
-      //   params.isRemoveKey = menu === MORE_MENU.Remove_Key;
-      //   params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key:FLAG_LANGUAGE.flag_language;
-      //   break;
 
-        case MORE_MENU.Custom_Key:
-        case MORE_MENU.Custom_Language:
-        case MORE_MENU.Remove_Key:
-            RouteName = 'CustomKeyPage';
-            RouteName = 'CustomKeyPage';
-            params.isRemoveKey = menu === MORE_MENU.Remove_Key;
-            params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
-            break;
+      case MORE_MENU.Custom_Key:
+      case MORE_MENU.Custom_Language:
+      case MORE_MENU.Remove_Key:
+          RouteName = 'CustomKeyPage';
+          RouteName = 'CustomKeyPage';
+          params.isRemoveKey = menu === MORE_MENU.Remove_Key;
+          params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
+          break;
 
     }
     if(RouteName){

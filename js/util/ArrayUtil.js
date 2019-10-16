@@ -10,4 +10,28 @@ export default class ArrayUtil {
     }
     return true;
   }
+
+  //更新数组 若item已经存在则将其从数组删除 若不存在则将其添加到数组
+  static updateArray(array,item){
+    for(let i = 0,len = array.length;i<len;i++){
+      let temp = array[i];
+      if(item === temp){
+        array.splice(i,1);
+        return;
+      }
+    }
+    array.push(item);
+  }
+
+  //将数组中指定元素移除
+  static remove(array,item,id){
+    if(!array)return;
+    for(let i = 0,l = array.length; i<l; i++){
+      const val = array[i];
+      if(item === val || val && val[id] && val[id] === item[id]){
+        array.splice(i,1);
+      }
+    }
+    return array;
+  }
 }

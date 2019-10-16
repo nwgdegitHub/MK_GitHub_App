@@ -56,7 +56,7 @@ class PopularPage extends Component {
   }
 
   _genTabs(){
-    
+
     const tabs = {};
     const {keys} = this.props;
     keys.forEach((item,index)=>{
@@ -84,6 +84,7 @@ class PopularPage extends Component {
     statusBar={statusBar}
     style={{backgroundColor: THEME_COLOR}}/>;
 
+    //利用lazy属性 每次刷新只渲染一个列表
     const TabNavigator = keys.length?createAppContainer(createMaterialTopTabNavigator(
       this._genTabs(),{
         tabBarOptions:{
@@ -96,7 +97,8 @@ class PopularPage extends Component {
           },
           indicatorStyle:styles.indicatorStyle,
           labelStyle:styles.labelStyle,
-        }
+        },
+        lazy:true
       }
     )):null;
     return <View style={{flex: 1, marginTop: DeviceInfo.isIPhoneX_deprecated?30:0}}>
