@@ -9,7 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   DeviceInfo,
-  Scrollview,
+  ScrollView,
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -38,11 +38,11 @@ import {FLAG_STORAGE} from '../expand/dao/DataStore';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 import FavoriteUtil from '../util/FavoriteUtil';
-
+import ViewUtil from '../util/ViewUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 
-import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
+import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 import BackPressComponent from '../common/BackPressComponent'
 import CheckBox from 'react-native-check-box'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -66,28 +66,44 @@ class CustomKeyPage extends Component {
     return true;
   }
 
+  static getDerivedStateFromProps(nextProps,prevState){
+     if(prevState.keys !== CustomKeyPage._keys(nextProps,null,prevState)){
+       return {
+         keys:CustomKeyPage._keys(nextProps,null,prevState),
+       }
+     }
+     return null;
+  }
+
   componentDidMount(){
     this.backPress.componentDidMount();
-
+    //console.log(this.state)
     if(CustomKeyPage._keys(this.props).length === 0){
       let {onLoadLanguage} = this.props;
       onLoadLanguage(this.params.flags);
     }
-    this.setState(
-      keys: CustomKeyPage._keys(this.props);
-    )
+    this.setState({
+        keys: CustomKeyPage._keys(this.props),
+    })
+  }
+
+  componentWillUnmount(){
+    this.backPress.componentWillUnmount();
   }
 
   //获取标签
   static _keys(props,original,state){
     const {flag,isRemoveKey} = props.navigation.state.params;
-     let key = flag === FLAG_LANGUAGE.flag_key ? "keys" : "language";
+     let key = flag === FLAG_LANGUAGE.flag_key ? 'keys' : 'keys';//languages报错
+
      if(isRemoveKey&&!original){
 
      }
      else
      {
-       return props.language[key ];
+       // console.log(props)
+
+       return props.language[key];
      }
   }
 
@@ -112,23 +128,7 @@ class CustomKeyPage extends Component {
   onSave(){
 
   }
-  renderView(){
-    let dataArray = this.state.keys;
-    if(!dataArray || dataArray.length === 0) return;
-    let len = dataArray.length;
-    let views = [];
-    for(let i = 0,l = len ; i < l; i+=2){
-      views.push(
-        <View keys={i}>
-            <View style={{flexDirection: 'row'}}>
-                {this.renderCheckBox(dataArray[i],i)}
-                {i+1<len && this.renderCheckBox(dataArray[i+1],i+1)}  
-                <View style={{flex: 1,height:0.3,backgroundColor: 'darkgray'}}></View>
-            </View>
-        </View>
-      )
-    }
-  }
+
   onClick(data,index){
 
   }
@@ -152,6 +152,27 @@ class CustomKeyPage extends Component {
     unCheckedImage={this._checkedImage(false)}
 />
   }
+
+  renderView() {
+      let dataArray = this.state.keys;
+      if (!dataArray || dataArray.length === 0) return;
+      let len = dataArray.length;
+      let views = [];
+      for (let i = 0, l = len; i < l; i += 2) {
+          views.push(
+              <View key={i}>
+                  <View style={{flexDirection: 'row'}}>
+                      {this.renderCheckBox(dataArray[i], i)}
+                      {i + 1 < len && this.renderCheckBox(dataArray[i + 1], i + 1)}
+                  </View>
+                  <View style={{flex: 1,height:0.3,backgroundColor: 'darkgray'}}/>
+              </View>
+          )
+      }
+
+      return views;
+  }
+
   render(){
 
     let title = this.isRemoveKey? '标签移除':'自定义标签';
@@ -162,26 +183,30 @@ class CustomKeyPage extends Component {
     title={title}
     style={{backgroundColor: THEME_COLOR}}
     rightButton={ViewUtil.getRightButton(rightButtonTitle,()=>this.onSave())}
+    leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
     />;
-    return <View style={{flex: 1}}>
-              {navigationBar}
-              <Scrollview>
-                {this.renderView()}
-              </Scrollview>
-            </View>
+    return <View
+        style={{flex: 1}}
+
+    >
+        {navigationBar}
+        <ScrollView>
+            {this.renderView()}
+        </ScrollView>
+    </View>
 
   }
 }
 
-const mapPopularStateToProps = state => ({
+const mapCustomKeyStateToProps = state => ({
   language:state.language, //直接取最外面的节点
 });
 
-const mapPopularDispatchToProps = dispatch => ({
+const mapCustomKeyDispatchToProps = dispatch => ({
   onLoadLanguage:(flag)=>dispatch(actions.onLoadLanguage(flag)),
 });
 
-export default connect(mapPopularStateToProps,mapPopularDispatchToProps)(CustomKeyPage);
+export default connect(mapCustomKeyStateToProps,mapCustomKeyDispatchToProps)(CustomKeyPage);
 
 
 

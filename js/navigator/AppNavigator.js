@@ -14,7 +14,8 @@ import AsncStorageDemoPage from '../page/AsncStorageDemoPage';//
 import DataStoreDemoPage from '../page/DataStoreDemoPage';//
 import WebViewPage from '../page/WebViewPage';//
 import AboutPage from '../page/about/AboutPage';//
-import AboutAuthorPage from '../page/about/AboutAuthorPage';
+import AboutAuthorPage from '../page/about/AboutAuthorPage';//CustomKeyPage
+import CustomKeyPage from '../page/CustomKeyPage';//
 import {createReactNavigationReduxMiddleware,createReduxContainer} from 'react-navigation-redux-helpers';
 export const rootCom = 'Init';//设置根路由
 
@@ -73,6 +74,12 @@ const MainNavigator = createStackNavigator({
   },//
   AboutAuthorPage:{
     screen:AboutAuthorPage,
+    navigationOptions:{
+      header:null,
+    }
+  },//
+  CustomKeyPage:{
+    screen:CustomKeyPage,
     navigationOptions:{
       header:null,
     }

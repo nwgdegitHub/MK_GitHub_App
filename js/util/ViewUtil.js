@@ -86,7 +86,7 @@ export default class ViewUtil{
   }
 
   //获取右侧文字按钮
-  static getRightButton(title,callBack){
+  static getRightButton(title,callback){
     return <TouchableOpacity
       style={{alignItems: 'center'}}
       onPress={callback}
