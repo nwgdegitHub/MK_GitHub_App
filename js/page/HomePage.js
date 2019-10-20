@@ -32,6 +32,10 @@ import AppNavigator from '../navigator/AppNavigator'
 
 import BackPressComponent from '../common/BackPressComponent'
 
+import CustomTheme from '../page/CustomTheme'
+
+import actions from '../action/index'; //此处导入actions是一种用法 其实在index.js中并没有actions 定义任意对象名都行
+
 class HomePage extends Component {
 
   //处理安卓物理返回键
@@ -106,13 +110,28 @@ class HomePage extends Component {
     }));
   }
 
+
+  renderCustomThemeView(){
+
+    const {customThemeViewVisible,onShowCustomThemeView} = this.props;
+    return (<CustomTheme
+        visible={customThemeViewVisible}
+        {...this.props}
+        onClose={()=>onShowCustomThemeView(false)}
+      />)
+  }
   render(){
     NavigationUtil.navigation = this.props.navigation;//此处保存下来的导航栏是为了界面跳转之用
-    if (!this.props.navigation) {
-      debugger;
-    }
-    const Tab = this._tabNavigator();
-    return <DynamicTabNavigator/>
+    // if (!this.props.navigation) {
+    //   debugger;
+    // }
+    // const Tab = this._tabNavigator();
+    // return <DynamicTabNavigator/>
+
+    return <View style={{flex:1}}>
+      <DynamicTabNavigator/>
+      {this.renderCustomThemeView()}
+    </View>
   }
 }
 
@@ -128,6 +147,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   nav:state.nav,
+  customThemeViewVisible:state.theme.customThemeViewVisible,
 });
 
-export default connect(mapStateToProps)(HomePage);
+const mapDispatchToProps = dispatch =>  ({
+  onShowCustomThemeView:(show)=>dispatch(actions.onShowCustomThemeView(show))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(HomePage);

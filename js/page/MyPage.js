@@ -20,8 +20,10 @@ import WebViewPage from './WebViewPage'
 import NavigationUtil from '../navigator/NavigationUtil';
 import AboutAuthorPage from './about/AboutAuthorPage'
 import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
+import {connect} from 'react-redux';
+import actions from '../action/index'; //此处导入actions是一种用法 其实在index.js中并没有actions 定义任意对象名都行
 
-export default class MyPage extends Component {
+class MyPage extends Component {
 
 
 //处理item点击事件
@@ -51,6 +53,22 @@ export default class MyPage extends Component {
           params.isRemoveKey = menu === MORE_MENU.Remove_Key;
           params.flag = menu !== MORE_MENU.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
           break;
+
+      case MORE_MENU.Sort_Key:
+        RouteName = 'SortKeyPage';
+        params.flag=FLAG_LANGUAGE.flag_key;
+        break;
+
+      case MORE_MENU.Sort_Language:
+        RouteName = 'SortKeyPage';
+        params.flag=FLAG_LANGUAGE.flag_language;
+        break;
+
+      case MORE_MENU.Custom_Theme:
+        RouteName = 'CustomTheme';
+        const {onShowCustomThemeView}=this.props;
+        onShowCustomThemeView(true);
+        break;
 
     }
     if(RouteName){
@@ -181,6 +199,18 @@ const styles = StyleSheet.create({
         color: 'gray'
     }
 });
+
+const mapStateToProps = state => ({
+
+  theme:state.theme.theme,
+});
+
+const mapDispatchToProps = dispatch =>  ({
+  onShowCustomThemeView:(show)=>dispatch(actions.onShowCustomThemeView(show))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(MyPage);
+
 // <Text style={styles.welcome}></Text>
 //
 // <View style={styles.container}>
