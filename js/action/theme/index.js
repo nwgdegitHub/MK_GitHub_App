@@ -12,6 +12,7 @@ export function onThemeChange(theme){
 
 //初始化主题
 export function onThemeInit(){
+  
   return dispatch => {
     new ThemeDao().getTheme()
     .then((data)=>{

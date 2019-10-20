@@ -58,11 +58,11 @@ class PopularPage extends Component {
   _genTabs(){
 
     const tabs = {};
-    const {keys} = this.props;
+    const {keys,theme} = this.props;
     keys.forEach((item,index)=>{
       if(item.checked){
         tabs[`tab${index}`]={
-          screen:props => <PopularTabPage {...props} tabLabel={item.name}/>,//配置路由的时候可以传递参数(实用，但官网没有)
+          screen:props => <PopularTabPage {...props} tabLabel={item.name} theme={theme}/>,//配置路由的时候可以传递参数(实用，但官网没有)
           navigationOptions:{
             title:item.name
           }
@@ -73,16 +73,18 @@ class PopularPage extends Component {
     return tabs;
   }
   render(){
+    
 
+    const {theme} = this.props;
     const {keys} = this.props;
     let statusBar={
       barStyle:'default',
-      backgroundColor:THEME_COLOR,
+      backgroundColor:theme.themeColor,
     };
     let navigationBar = <NavigationBar
     title={'最热'}
     statusBar={statusBar}
-    style={{backgroundColor: THEME_COLOR}}/>;
+    style={{backgroundColor: theme.themeColor}}/>;
 
     //利用lazy属性 每次刷新只渲染一个列表
     const TabNavigator = keys.length?createAppContainer(createMaterialTopTabNavigator(
@@ -92,7 +94,7 @@ class PopularPage extends Component {
           upperCaseLabel:false,//是否使标签大写
           scrollEnabled:true,
           style:{
-            backgroundColor:'#678',
+            backgroundColor:theme.themeColor,
             height:30,//解决安卓上闪烁问题
           },
           indicatorStyle:styles.indicatorStyle,
@@ -113,6 +115,7 @@ class PopularPage extends Component {
 
 const mapPopularStateToProps = state => ({
   keys:state.language.keys,
+  theme:state.theme.theme,
 });
 
 const mapPopularDispatchToProps = dispatch => ({
@@ -196,8 +199,10 @@ class PopularTab extends Component {
 
   renderItem(data){
     //Alert.alert(data);
+    const {theme} = this.props;
     const item = data.item;
     return <PopularItem
+    theme = {theme}
     projectModel={item}
     onSelect={(callback)=>{
       NavigationUtil.goPage({
@@ -222,7 +227,7 @@ class PopularTab extends Component {
 
   render(){
     //Alert.alert('124');
-
+    const {theme}=this.props;
     const {popular}=this.props;
     let store=this._store();
     //Alert.alert(store.projectModels);
@@ -242,10 +247,10 @@ class PopularTab extends Component {
             <RefreshControl
               title={'加载中'}
               // titleColor:{THEME_COLOR}
-              colors={[THEME_COLOR]}
+              colors={[theme.themeColor]}
               refreshing={store.isLoading}
               onRefresh={()=>this.loadData()}
-              tintColor={THEME_COLOR}
+              tintColor={theme.themeColor}
             />
           }
           ListFooterComponent={()=>this.genIndicator()}
@@ -274,6 +279,7 @@ class PopularTab extends Component {
 
 const mapStateToProps = state =>({
   popular:state.popular,
+
 
 });// 所有页面订阅的地方都可以参照此处写法
 

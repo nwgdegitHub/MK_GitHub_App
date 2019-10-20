@@ -9,7 +9,8 @@ export default class ThemeDao {
      */
     getTheme() {
         return new Promise((resolve, reject) => {
-            AsyncStorage.getItem(this.flag, (error, result) => {
+            AsyncStorage.getItem(THEME_KEY, (error, result) => {
+                
                 if (error) {
                     reject(error);
                     return;
@@ -24,12 +25,13 @@ export default class ThemeDao {
     }
 
     /**
-     * 保存主题标识
+     * 保存主题标识 '#009688'
      * @param objectData
      */
-    save(themeFlags) {
-
-        AsyncStorage.setItem(THEME_KEY, themeFlags, (error, result) => {
+    save(themeFlag) {
+        // console.log('save themeFlags')
+        // console.log(themeFlag)
+        AsyncStorage.setItem(THEME_KEY, themeFlag, (error, result) => {
 
         });
     }

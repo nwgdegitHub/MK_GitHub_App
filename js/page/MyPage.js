@@ -78,19 +78,20 @@ class MyPage extends Component {
 
   //使用封装的item
   getItem(menu){
-    return ViewUtil.getMenuItem(()=>this.onClick(menu),menu,THEME_COLOR);
+    const {theme} = this.props;
+    return ViewUtil.getMenuItem(()=>this.onClick(menu),menu,theme.themeColor);
   }
 
   render(){
-    const {navigation} = this.props;
-
+    //const {navigation} = this.props;
+    const {theme} = this.props;
     let statusBar={
       barStyle:'default',
       backgroundColor:THEME_COLOR,
     };
     let navigationBar = <NavigationBar title={'我的'}
     statusBar={statusBar}
-    style={{backgroundColor: THEME_COLOR}}
+    style={theme.styles.navBar}
 
     />;
 
@@ -114,14 +115,14 @@ class MyPage extends Component {
               <Ionicons
                 name={MORE_MENU.About.icon}
                 size={40}
-                style={{marginRight: 10,color: THEME_COLOR}}
+                style={{marginRight: 10,color: theme.themeColor}}
               />
               <Text>GitHub Popular</Text>
             </View>
             <Ionicons
               name={'ios-arrow-forward'}
               size={16}
-              style={{marginRight: 10,color: THEME_COLOR,alignSelf: 'center'}}
+              style={{marginRight: 10,color: theme.themeColor,alignSelf: 'center'}}
             />
           </TouchableOpacity>
 
