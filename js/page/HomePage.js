@@ -120,6 +120,7 @@ class HomePage extends Component {
         onClose={()=>onShowCustomThemeView(false)}
       />)
   }
+
   render(){
     NavigationUtil.navigation = this.props.navigation;//此处保存下来的导航栏是为了界面跳转之用
     // if (!this.props.navigation) {
