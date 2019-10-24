@@ -73,7 +73,7 @@ class PopularPage extends Component {
     return tabs;
   }
   render(){
-    
+
 
     const {theme} = this.props;
     const {keys} = this.props;
@@ -180,8 +180,9 @@ class PopularTab extends Component {
 
   // 获取与当前页面有关的数据
   _store(){
+    console.log(this.state)
     const {popular} = this.props;
-    let store = popular[this.storeName];
+    let store = popular[this.storeName];//{items:[],isLoading:false,}
     if(!store){
       store = {
         items:[],
