@@ -12,6 +12,7 @@ export function handleData(actionType,dispatch,storeName,data,pageSize,favoriteD
     }
 
   }
+
   let showItems = pageSize>fixItems.length?fixItems:fixItems.slice(0,pageSize);//第一次要显示的数据
      _projectModels(showItems,favoriteDao,projectModels=>{
 
@@ -43,15 +44,21 @@ export async function _projectModels(showItems,favoriteDao,callback){
   for(let i = 0,len = showItems.length;i<len;i++){
     projectModels.push(new ProjectModel(showItems[i],Utils.checkFavorite(showItems[i],keys)))
   }
-  if(typeof callback === 'function'){
-    //callback(projectModels);
-    doCallBack(callBack,projectModels);
-  }
+  // console.log(doCallBack);
+  //doCallBack(callBack,projectModels);
+  callBack(projectModels);
 }
+
+// export function doCallBack(callBack,object){
+//   if(typeof callBack === 'function'){
+//     callBack(object);
+//   }
+// }
 
 
 export const doCallBack = (callBack,object) => {
+
   if(typeof callBack === 'function'){
     callBack(object);
   }
-}
+};

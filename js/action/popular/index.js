@@ -10,6 +10,7 @@ export function onLoadPopularData(storeName,url,pageSize,favoriteDao){
     let dataStore = new DataStore();
     dataStore.fetchData(url,FLAG_STORAGE.flag_popular)//异步action与数据流
             .then(data=>{
+              
               handleData(Types.POPULAR_REFRESH_SUCCESS,dispatch,storeName,data,pageSize,favoriteDao)
             })
             .catch(error=>{

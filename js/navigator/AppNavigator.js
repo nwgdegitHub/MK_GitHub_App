@@ -17,6 +17,7 @@ import AboutPage from '../page/about/AboutPage';//
 import AboutAuthorPage from '../page/about/AboutAuthorPage';//CustomKeyPage
 import CustomKeyPage from '../page/CustomKeyPage';//
 import SortKeyPage from '../page/SortKeyPage';
+import SearchPage from '../page/SearchPage'
 
 import {createReactNavigationReduxMiddleware,createReduxContainer} from 'react-navigation-redux-helpers';
 export const rootCom = 'Init';//设置根路由
@@ -91,7 +92,14 @@ const MainNavigator = createStackNavigator({
     navigationOptions:{
       header:null,
     }
+  },//
+  SearchPage:{
+    screen:SearchPage,
+    navigationOptions:{
+      header:null,
+    }
   },
+
 });
 
 //连接InitNavigator和MainNavigator

@@ -42,7 +42,7 @@ export default function onAction(state=defaultState,action){
           pageIndex:action.pageIndex,
           showText:'搜索',
           inputKey:action.inputKey,
-          },
+          
         };
     case Types.SEARCH_FAIL://下拉刷新失败
         return {

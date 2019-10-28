@@ -80,7 +80,7 @@ function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack
         }
         dispatch({
           type:Types.POPULAR_LOAD_MORE_FAIL,
-          error:'没有更多了'，
+          error:'没有更多了',
           pageIndex:--pageIndex,
         })
       }

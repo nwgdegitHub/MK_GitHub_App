@@ -42,6 +42,7 @@ import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 
 import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 /* PopularPage+redux */
 
@@ -72,6 +73,26 @@ class PopularPage extends Component {
     })
     return tabs;
   }
+
+  renderRightButton(){
+    const {theme} = this.props;
+    return <TouchableOpacity
+      onPress={()=>{
+        NavigationUtil.goPage({theme},'SearchPage')
+      }}
+    >
+        <View
+          style={{padding: 5,marginRight: 8}}
+        >
+          <Ionicons
+            name={'ios-search'}
+            size={24}
+            style={{marginRight: 8,alignSelf: 'center',color: 'white'}}
+          />
+        </View>
+    </TouchableOpacity>
+  }
+
   render(){
 
 
@@ -84,7 +105,9 @@ class PopularPage extends Component {
     let navigationBar = <NavigationBar
     title={'最热'}
     statusBar={statusBar}
-    style={{backgroundColor: theme.themeColor}}/>;
+    style={{backgroundColor: theme.themeColor}}
+    rightButton={this.renderRightButton()}
+    />;
 
     //利用lazy属性 每次刷新只渲染一个列表
     const TabNavigator = keys.length?createAppContainer(createMaterialTopTabNavigator(
@@ -233,7 +256,7 @@ class PopularTab extends Component {
     let store=this._store();
     //Alert.alert(store.projectModels);
     // console.log('1')
-    // console.log(store.projectModes)
+    // console.log(store)
     // console.log('2')
     return (
 

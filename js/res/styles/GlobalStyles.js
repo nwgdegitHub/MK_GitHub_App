@@ -1,5 +1,17 @@
+import React, {Component} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+  Dimensions
+} from 'react-native';
 
 const BACKGROUP_COLOR = '#f3f3f4';
+const {height,width} = Dimensions.get('window');
+
 export default{
   line:{
     height:0.5,
@@ -13,4 +25,5 @@ export default{
   nav_bar_height_ios:44,
   nav_bar_height_android:50,
   backgroundColor:BACKGROUP_COLOR,
+  window_height:height,
 }

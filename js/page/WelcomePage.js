@@ -17,7 +17,7 @@ class WelcomePage extends Component {
       NavigationUtil.resetToHomePage({
         navigation:this.props.navigation
       });
-    },2000);//停留0.2s进入首页
+    },200);//停留0.2s进入首页
   }
 
   componentWillMount(){
