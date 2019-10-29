@@ -9,6 +9,7 @@ export function onLoadTrendingData(storeName,url,pageSize,favoriteDao){
     let dataStore = new DataStore();
     dataStore.fetchData(url,FLAG_STORAGE.flag_trending)//异步action与数据流
             .then(data=>{
+
               handleData(Types.TRENDING_REFRESH_SUCCESS,dispatch,storeName,data,pageSize,favoriteDao)
             })
             .catch(error=>{
@@ -48,7 +49,7 @@ export function onLoadMoreTrendingData(storeName,pageIndex,pageSize,dataArray=[]
                 type: Types.TRENDING_LOAD_MORE_SUCCESS,
                 storeName,
                 pageIndex,
-                projectModes: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
+                projectModels: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
             })
         })
       }
@@ -65,7 +66,7 @@ export function onFlushTrendingFavorite(storeName,pageIndex,pageSize,dataArray =
             type: Types.TRENDING_FLUSH_FAVORITE,
             storeName,
             pageIndex,
-            projectModes: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
+            projectModels: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
         })
     })
 

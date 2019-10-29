@@ -1,7 +1,7 @@
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 //导入贾老师写的趋势页面接口
-import Trending from 'GitHubTrending';
+import GitHubTrending from 'GitHubTrending';
 
 //定义一个标识 请求最热或者趋势
 export const  FLAG_STORAGE = {flag_popular:'popular',flag_trending:'trending'};
@@ -104,8 +104,11 @@ export default class DataStore{
       }
       else
       {
-          new Trending().fetchTrending(url)
+
+          new GitHubTrending().fetchTrending(url)
+
                 .then(items=>{
+                  console.log(items)
                   if(!items){
                     throw new Error('error');
                   }
@@ -114,6 +117,8 @@ export default class DataStore{
 
                 })
                 .catch(error=>{
+                  console.log('error')
+                  console.log(error)
                   reject(error);
                 })
       }

@@ -5,9 +5,9 @@ import {
   Text,
   Button,
   TextInput,
-  AsyncStorage,
-} from 'react-native';
 
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 const KEY="save_key";
 export default class AsncStorageDemoPage extends Component {
   constructor(props){

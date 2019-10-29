@@ -30,6 +30,7 @@ import Toast from 'react-native-easy-toast';
 import NavigationBar from '../common/NavigationBar';
 
 const URL = 'https://github.com/trending/';
+
 // const QUERY_STR = '&sort=stars';
 const THEME_COLOR = '#678';
 //https://github.com/trending/c++?since=daily
@@ -65,13 +66,14 @@ class TrendingPage extends Component {
   }
 
   _genTabs(){
+
     const tabs = {};
-    const {keys} = this.props;
+    const {keys,theme} = this.props;
     this.preKeys=keys;
     keys.forEach((item,index)=>{
       if(item.checked){
         tabs[`tab${index}`]={
-          screen:props => <TrendingTabPage {...props} tabLabel={item.name}/>,//配置路由的时候可以传递参数(实用，但官网没有)
+          screen:props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} tabLabel={item.name} theme={theme}/>,//配置路由的时候可以传递参数(实用，但官网没有)
           navigationOptions:{
             title:item.name
           }
@@ -111,7 +113,7 @@ class TrendingPage extends Component {
     });
 
     //发送事件 在切换时间维度的时候 tab不刷新 下面的页面刷新
-    DeviceEventEmitter.emit(EVENT_TYPE_TIME_SPAN_CHANGE,timeSpan);
+    DeviceEventEmitter.emit(EVENT_TYPE_TIME_SPAN_CHANGE,tab);
 
   }
 
@@ -123,7 +125,11 @@ class TrendingPage extends Component {
   }
 
   _tabNav(){
-    if(!this.tabNavi || !ArrayUtil.isEqual(this.preKeys,this.props.keys)){
+
+    const {theme} = this.props;
+
+    if(theme !== this.theme || !this.tabNavi || !ArrayUtil.isEqual(this.preKeys,this.props.keys)){
+      this.theme = theme;
       //优化顶部tab 不让他切换时间维度时刷新
       this.tabNavi = createAppContainer(createMaterialTopTabNavigator(
         this._genTabs(),{
@@ -132,11 +138,12 @@ class TrendingPage extends Component {
             upperCaseLabel:false,//是否使标签大写
             scrollEnabled:true,
             style:{
-              backgroundColor:'#678',height:30,
+              backgroundColor:theme.themeColor,height:30,
             },
             indicatorStyle:styles.indicatorStyle,
             labelStyle:styles.labelStyle,
-          }
+          },
+          lazy:true
         }
       ));
     }
@@ -144,16 +151,17 @@ class TrendingPage extends Component {
   }
 
   render(){
-
+    const {theme} = this.props;
+    
     const {keys} = this.props;
     let statusBar={
       barStyle:'default',
-      backgroundColor:THEME_COLOR,
+      backgroundColor:theme.themeColor,
     };
     let navigationBar = <NavigationBar
     titleView={this.renderTitleView()}
     statusBar={statusBar}
-    style={{backgroundColor: THEME_COLOR}}/>;
+    style={{backgroundColor: theme.themeColor}}/>;
 
     const TabNavigator = keys.length?this._tabNav():null;
     return <View style={{flex: 1,marginTop: DeviceInfo.isIPhoneX_deprecated?30:0}}>
@@ -170,7 +178,7 @@ class TrendingPage extends Component {
 
 const mapPopularStateToProps = state => ({
   keys:state.language.languages,
-  theme:state.theme.theme,
+  theme:state.theme.theme
 });
 
 const mapPopularDispatchToProps = dispatch => ({
@@ -180,18 +188,21 @@ const mapPopularDispatchToProps = dispatch => ({
 export default connect(mapPopularStateToProps,mapPopularDispatchToProps)(TrendingPage);
 
 const pageSize = 10;// 设为常量 防止修改
+
 //自定义组件
 class TrendingTab extends Component {
 
-  constructor(props){
-    super(props);
-    const {tabLabel} = this.props;
-    this.storeName = tabLabel;
+  constructor(props) {
+      super(props);
+      const {tabLabel, timeSpan} = this.props;
+      this.storeName = tabLabel;
+      this.timeSpan = timeSpan;
+      this.isFavoriteChanged = false;
   }
 
   componentDidMount(){
     this.loadData();
-    this.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE,()=>{
+    this.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE,(timeSpan)=>{
       this.timeSpan=timeSpan;
       this.loadData();
     });
@@ -205,6 +216,7 @@ class TrendingTab extends Component {
       }
     });
   }
+
   componentWillUnmount(){
     if(this.timeSpanChangeListener){
       this.timeSpanChangeListener.remove();
@@ -230,6 +242,8 @@ class TrendingTab extends Component {
     }
     else
     {
+      // console.log('onLoadTrendingData')
+
       onLoadTrendingData(this.storeName,url,pageSize,favoriteDao);
     }
 
@@ -243,7 +257,7 @@ class TrendingTab extends Component {
       store = {
         items:[],
         isLoading:false,
-        projectModes:[], // 要显示的数据
+        projectModels:[], // 要显示的数据
         hideLoadingMore:true, // 默认隐藏加载更多
       }
     }
@@ -251,22 +265,24 @@ class TrendingTab extends Component {
   }
 
   genFetchUrl(key){
-    //Alert.alert(URL + key + '?since=daily');
-    if(key === 'Any'){
-
-      return URL + '' + '?since=daily';
-    }
-    else{
-      return URL + key + '?since=daily';
-    }
-
+    // Alert.alert(this.timeSpan);
+    // if(key === 'Any'){
+    //
+    //   return URL + '' + '?since=daily';
+    // }
+    // else{
+    //   return URL + key + '?since=daily';
+    // }
+    //console.log(URL + key + '?' + this.timeSpan.searchText)
+    return URL + key + '?' + this.timeSpan.searchText;
   }
 //https://github.com/trending/c++?since=daily
   renderItem(data){
     const item = data.item;
-
+    const {theme} = this.props;
     return <TrendingItem
      projectModel={item}
+     theme = {theme}
      onSelect={(callback)=>{
       NavigationUtil.goPage({
         projectModel:item,
@@ -291,23 +307,23 @@ class TrendingTab extends Component {
 
   render(){
 
-    const {popular}=this.props;
+    const {popular,theme}=this.props;
     let store=this._store();
 
     return (
       <View style={styles.container}>
         <FlatList
-          data={store.projectModes}
+          data={store.projectModels}
           renderItem={data=>this.renderItem(data)}
           keyExtractor={item=>""+item.item.fullName}
           refreshControl={
             <RefreshControl
               title={'加载中'}
               // titleColor:{THEME_COLOR}
-              colors={[THEME_COLOR]}
+              colors={[theme.themeColor]}
               refreshing={store.isLoading}
               onRefresh={()=>this.loadData()}
-              tintColor={THEME_COLOR}
+              tintColor={theme.themeColor}
             />
           }
           ListFooterComponent={()=>this.genIndicator()}
@@ -334,7 +350,8 @@ class TrendingTab extends Component {
 }
 
 const mapStateToProps = state =>({
-  trending:state.trending
+  trending:state.trending,
+  theme:state.theme.theme,
 });// 所有页面订阅的地方都可以参照此处写法
 
 const mapDispatchToProps = dispatch => ({

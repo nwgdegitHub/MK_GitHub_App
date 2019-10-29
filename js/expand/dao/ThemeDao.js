@@ -1,4 +1,4 @@
-import {AsyncStorage,} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ThemeFactory,{ThemeFlags} from '../../res/styles/ThemeFactory'
 const THEME_KEY = 'theme_key'
 export default class ThemeDao {
@@ -10,7 +10,7 @@ export default class ThemeDao {
     getTheme() {
         return new Promise((resolve, reject) => {
             AsyncStorage.getItem(THEME_KEY, (error, result) => {
-                
+
                 if (error) {
                     reject(error);
                     return;

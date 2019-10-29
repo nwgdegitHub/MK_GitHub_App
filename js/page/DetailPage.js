@@ -26,6 +26,7 @@ export default class DetailPage extends Component {
   //因为导航栏标题是动态的
   constructor(props){
     super(props);
+
     // 取出必要参数
     this.params = this.props.navigation.state.params;
     const {projectModel,flag} = this.params;//flag 表示是从哪个模块进来的
@@ -61,6 +62,7 @@ export default class DetailPage extends Component {
     }
   }
   onFavoriteButtonClick(){
+    // console.log(this.params)
     const {projectModel,callback}=this.params;
     const isFavorite=projectModel.isFavorite=!projectModel.isFavorite;
     callback(isFavorite);//更新外面列表的收藏状态
@@ -77,8 +79,10 @@ export default class DetailPage extends Component {
   }
 
   renderRightButton(){
+    //console.log(this.props)
+    const {theme} = this.params;
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row',backgroundColor: theme.themeColor}}>
         <TouchableOpacity onPress={()=>this.onFavoriteButtonClick()}>
           <FontAwesome
             name={this.state.isFavorite?'star':'star-o'}
@@ -100,19 +104,16 @@ export default class DetailPage extends Component {
 
   render(){
 
-    let statusBar={
-      barStyle:'default',
-      backgroundColor:THEME_COLOR,
-    };
+    const {theme} = this.params;
+
     //标题如果过长 需要设置右边的内边距
     const titleLayoutStyle = this.state.title.length > 20 ? {paddingRight : 30} : null;
     let navigationBar = <NavigationBar
-    leftButton={ViewUtil.getLeftBackButton(()=>this.goBack())}
-    title={this.state.title}
-    statusBar={statusBar}
-    style={{backgroundColor: THEME_COLOR}}
-    rightButton={this.renderRightButton()}
-    titleLayoutStyle={titleLayoutStyle}
+      leftButton={ViewUtil.getLeftBackButton(theme,()=>this.goBack())}
+      title={this.state.title}
+      style={[styles.navBar,theme.styles.navBar]}
+      rightButton={this.renderRightButton()}
+      titleLayoutStyle={titleLayoutStyle}
     />;
 
     return (
@@ -128,18 +129,16 @@ export default class DetailPage extends Component {
       );
   }
 }
+// position: 'absolute',
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor:'#F5FCFF',
-    marginTop: DeviceInfo.isIPhoneX_deprecated?30:0,
+  },
+
+  navBar: {
+
+      left: 0,
+      right: 0,
 
   },
-  text:{
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
 });

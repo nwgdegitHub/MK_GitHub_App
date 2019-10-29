@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+ import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,9 @@ import {
   Alert,
   ActivityIndicator,
   DeviceInfo,
+  Platform,
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -22,32 +25,24 @@ import { createStackNavigator,
  } from 'react-navigation';
 
 import NavigationUtil from '../navigator/NavigationUtil';
-
 import Toast from 'react-native-easy-toast';
-
 import NavigationBar from '../common/NavigationBar'
+
+import {FLAG_STORAGE} from '../expand/dao/DataStore';
+
+import GlobalStyles from '../res/styles/GlobalStyles';
+import Utils from '../util/Utils';
+import FavoriteDao from '../expand/dao/FavoriteDao';
+import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
+import LanguageDao from '../expand/dao/LanguageDao'
+import ViewUtil from '../util/ViewUtil';
+
+import BackPressComponent from '../common/BackPressComponent';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 const THEME_COLOR = '#678';
-
-import FavoriteDao from '../expand/dao/FavoriteDao';
-import {FLAG_STORAGE} from '../expand/dao/DataStore';
-
-const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
-
-import FavoriteUtil from '../util/FavoriteUtil';
-
-import EventBus from 'react-native-event-bus';
-import EventTypes from '../util/EventTypes';
-
-import {FLAG_LANGUAGE},LanguageDao from '../expand/dao/LanguageDao';
-import FavoriteDao from '../expand/dao/FavoriteDao';
-import BackPressComponent from '../common/BackPressComponent'
-import GlobalStyles from '../res.styles/GlobalStyles'
-import Utils from '../util/Utils'
-
-const pageSize = 10;// 设为常量 防止修改
+const pageSize = 10;
 
 /* SearchPage+redux */
 
@@ -94,6 +89,17 @@ class SearchPage extends Component {
       onLoadLanguage(FLAG_LANGUAGE.flag_key);
     }
     return true;
+  }
+
+  genIndicator(){
+    const {search} = this.props;
+    return search.hideLoadingMore?null:
+    <View>
+      <ActivityIndicator
+        style={styles.indicator}
+      />
+      <Text>正在加载更多</Text>
+    </View>
   }
 
 
@@ -153,10 +159,12 @@ class SearchPage extends Component {
 
     </TouchableOpacity>;
     return <View style={{
+
       backgroundColor: theme.themeColor,
       flexDirection: 'row',
       alignItems: 'center',
-      height: (Platform.OS === 'ios')?GlobalStyles.nav_bar_height_ios:GlobalStyles.nav_bar_height_android;
+      
+      height: (Platform.OS === 'ios')?GlobalStyles.nav_bar_height_ios:GlobalStyles.nav_bar_height_android,
     }}>
       {backButton}
       {inputView}
@@ -192,7 +200,7 @@ class SearchPage extends Component {
     }
 
     let listView = !isLoading?<FlatList
-      data={projectModes}
+      data={projectModels}
       renderItem={data=>this.renderItem(data)}
       keyExtractor={item=>""+item.item.id} //参数item相当于projectModel
       contentInset={
@@ -277,7 +285,6 @@ const mapPopularDispatchToProps = dispatch => ({
 
 export default connect(mapPopularStateToProps,mapPopularDispatchToProps)(SearchPage);
 
-
 const styles = StyleSheet.create({
   container:{
     flex: 1,
@@ -313,5 +320,21 @@ const styles = StyleSheet.create({
     right: 10,
     borderRadius: 3,
     top:GlobalStyles.window_height - 45,
-  }
+  },
+  indicator:{
+
+  },
+  textInput: {
+      flex: 1,
+      height: (Platform.OS === 'ios') ? 26 : 36,
+      borderWidth: (Platform.OS === 'ios') ? 1 : 0,
+      borderColor: "white",
+      alignSelf: 'center',
+      paddingLeft: 5,
+      marginRight: 10,
+      marginLeft: 5,
+      borderRadius: 3,
+      opacity: 0.7,
+      color: 'white',
+  },
 });

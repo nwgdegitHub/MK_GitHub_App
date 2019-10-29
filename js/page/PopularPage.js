@@ -9,6 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   DeviceInfo,
+  TouchableOpacity
 } from 'react-native';
 
 import {connect} from 'react-redux';
@@ -74,9 +75,11 @@ class PopularPage extends Component {
     return tabs;
   }
 
+//此处TouchableOpacity外面不用View包裹的话 点击时会显示蓝色
   renderRightButton(){
     const {theme} = this.props;
     return <TouchableOpacity
+    style={{backgroundColor: theme.themeColor}}
       onPress={()=>{
         NavigationUtil.goPage({theme},'SearchPage')
       }}
@@ -95,7 +98,6 @@ class PopularPage extends Component {
 
   render(){
 
-
     const {theme} = this.props;
     const {keys} = this.props;
     let statusBar={
@@ -105,7 +107,8 @@ class PopularPage extends Component {
     let navigationBar = <NavigationBar
     title={'最热'}
     statusBar={statusBar}
-    style={{backgroundColor: theme.themeColor}}
+
+    style={theme.styles.navBar}
     rightButton={this.renderRightButton()}
     />;
 
@@ -178,8 +181,6 @@ class PopularTab extends Component {
     EventBus.getInstance().removeListener(this.bottomTabSelectListener);
   }
 
-
-
   loadData(loadMore,refershFavorite){
     const {onLoadPopularData,onLoadMorePopularData,onFlushPopularFavorite} = this.props;
     const store=this._store();
@@ -222,6 +223,7 @@ class PopularTab extends Component {
   }
 
   renderItem(data){
+
     //Alert.alert(data);
     const {theme} = this.props;
     const item = data.item;
@@ -230,6 +232,7 @@ class PopularTab extends Component {
     projectModel={item}
     onSelect={(callback)=>{
       NavigationUtil.goPage({
+        theme,
         projectModel:item,
         flag:FLAG_STORAGE.flag_popular,
         callback,
@@ -250,6 +253,7 @@ class PopularTab extends Component {
   }
 
   render(){
+
     //Alert.alert('124');
     const {theme}=this.props;
     const {popular}=this.props;
@@ -258,6 +262,7 @@ class PopularTab extends Component {
     // console.log('1')
     // console.log(store)
     // console.log('2')
+
     return (
 
       <View style={styles.container}>

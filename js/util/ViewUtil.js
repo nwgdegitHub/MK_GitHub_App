@@ -55,19 +55,24 @@ export default class ViewUtil{
     return ViewUtil.getSettingItem(callBack,menu.name,color,menu.Icons,menu.icon);
   }
 
-  //获取左侧返回按钮
-  static getLeftBackButton(callback){
-    return <TouchableOpacity
-      style={{padding: 8,paddingLeft: 12}}
-      onPress={callback}
-    >
-    <Ionicons
-      name={'ios-arrow-back'}
-      size={26}
-      style={{color:'white'}}
-    />
+  //获取左侧返回按钮 backgroundColor: 'rgba(255,255,255,0)'
+  static getLeftBackButton(theme,callback){
+    return (<View style={{flex: 1,backgroundColor: theme.themeColor}}>
+      <TouchableOpacity
+        style={{padding: 8,paddingLeft: 12,}}
+        onPress={callback}
+      >
+      <Ionicons
+        name={'ios-arrow-back'}
+        size={26}
+        style={{color:'white'}}
+      />
 
-    </TouchableOpacity>
+      </TouchableOpacity>
+      </View>)
+
+
+
   }
 
   //获取分享按钮getShareButton

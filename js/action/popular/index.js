@@ -10,7 +10,7 @@ export function onLoadPopularData(storeName,url,pageSize,favoriteDao){
     let dataStore = new DataStore();
     dataStore.fetchData(url,FLAG_STORAGE.flag_popular)//异步action与数据流
             .then(data=>{
-              
+
               handleData(Types.POPULAR_REFRESH_SUCCESS,dispatch,storeName,data,pageSize,favoriteDao)
             })
             .catch(error=>{
@@ -48,7 +48,7 @@ export function onLoadMorePopularData(storeName, pageIndex, pageSize, dataArray 
                         type: Types.POPULAR_LOAD_MORE_SUCCESS,
                         storeName,
                         pageIndex,
-                        projectModes: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
+                        projectModels: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
                     })
                 })
             }

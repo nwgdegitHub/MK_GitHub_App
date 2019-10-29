@@ -5,9 +5,9 @@ import {
   Text,
   Button,
   TextInput,
-  AsyncStorage,
-} from 'react-native';
 
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import DataStore from '../expand/dao/DataStore'
 
 const KEY="save_key";
