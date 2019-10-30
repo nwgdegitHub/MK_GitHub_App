@@ -23,6 +23,7 @@ popular:{
 }
 */
 export default function onAction(state=defaultState,action){
+
   switch(action.type){
     case Types.SEARCH_REFRESH://下拉刷新成功
         return {
@@ -38,11 +39,11 @@ export default function onAction(state=defaultState,action){
           hideLoadingMore:false,
           showBottomButton:action.showBottomButton,
           items:action.items,
-          projectModes:action.projectModes,
+          projectModels:action.projectModels,
           pageIndex:action.pageIndex,
           showText:'搜索',
           inputKey:action.inputKey,
-          
+
         };
     case Types.SEARCH_FAIL://下拉刷新失败
         return {
@@ -62,7 +63,7 @@ export default function onAction(state=defaultState,action){
         return {
           ...state,//生成旧state的副本
           hideLoadingMore:false,
-          projectModes:action.projectModes,
+          projectModels:action.projectModels,
           pageIndex:action.pageIndex,
 
         };

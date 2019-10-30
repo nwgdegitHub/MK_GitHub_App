@@ -88,7 +88,7 @@ export default class NavigationBar extends Component{
 
   getButtonElement(data){
     return(
-      <View style={{backgroundColor: '#2196f3'}}>
+      <View>
         {data?data:null}
       </View>
     )

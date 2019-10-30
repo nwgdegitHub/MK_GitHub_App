@@ -56,23 +56,31 @@ export default class ViewUtil{
   }
 
   //获取左侧返回按钮 backgroundColor: 'rgba(255,255,255,0)'
-  static getLeftBackButton(theme,callback){
-    return (<View style={{flex: 1,backgroundColor: theme.themeColor}}>
-      <TouchableOpacity
-        style={{padding: 8,paddingLeft: 12,}}
-        onPress={callback}
-      >
-      <Ionicons
-        name={'ios-arrow-back'}
-        size={26}
-        style={{color:'white'}}
-      />
+  // static getLeftBackButton(theme,callback){
+  //   return (<View style={{flex: 1,backgroundColor: theme.themeColor,width: 30,marginRight: 10}}>
+  //     <TouchableOpacity
+  //       style={{padding: 8,paddingLeft: 12,backgroundColor: 'red',width: 30}}
+  //       onPress={callback}
+  //     >
+  //     <Ionicons
+  //       name={'ios-arrow-back'}
+  //       size={26}
+  //       style={{color:'white'}}
+  //     />
+  //
+  //     </TouchableOpacity>
+  //     </View>)
+  // }
 
+  static getLeftBackButton(theme,callBack) {
+      return <TouchableOpacity
+          style={{padding: 8, paddingLeft: 12}}
+          onPress={callBack}>
+          <Ionicons
+              name={'ios-arrow-back'}
+              size={26}
+              style={{color: 'white'}}/>
       </TouchableOpacity>
-      </View>)
-
-
-
   }
 
   //获取分享按钮getShareButton

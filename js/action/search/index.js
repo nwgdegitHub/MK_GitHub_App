@@ -14,6 +14,7 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,popularKeys,callBac
       return hasCancel(token,true)?null:response.json();
     })
     .then(responseData=>{
+
       if(hasCancel(token)){
         console.log('用户取消')
         return;
@@ -24,7 +25,7 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,popularKeys,callBac
         return;
       }
       let items=responseData.items;
-      handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data:item},pageSize,favoriteDao,
+      handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data:items},pageSize,favoriteDao,
       {
         showBottomButton:!checkKeyIsExist(popularKeys,inputKey),
         inputKey,
@@ -55,6 +56,7 @@ function hasCancel(token,isRemove){
 
 //检查key是否存在于keys中
 function checkKeyIsExist(keys,key){
+  debugger
   for(let i = 0,l=keys.length;i<l;i++){
     if(key.toLowerCase() === keys[i].name.toLowerCase())return true;
   }
@@ -92,7 +94,7 @@ function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack
                 type: Types.POPULAR_LOAD_MORE_SUCCESS,
                 storeName,
                 pageIndex,
-                projectModes: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
+                projectModels: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
             })
         })
       }

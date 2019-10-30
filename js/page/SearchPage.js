@@ -138,32 +138,32 @@ class SearchPage extends Component {
     const {theme} = this.params;
     const {showText,inputKey} = this.props.search;
     const placeholder = inputKey || '请输入';
+
     let backButton = ViewUtil.getLeftBackButton(()=>this.onBackPress());
+
     let inputView = <TextInput
       ref = "input"
       placeholder={placeholder}
       onChangetext={text=>this.inputKey = text}
       style={styles.textInput}
-
     ></TextInput>;
 
     let rightButton = <TouchableOpacity
       onPress={()=>{
-        this.refs.input.blur().//收起键盘
+        this.refs.input.blur()//收起键盘
         this.onRightButtonClick();
       }}
     >
+
       <View style={{marginRight:10}}>
         <Text style={styles.title}>{showText}</Text>
       </View>
 
     </TouchableOpacity>;
     return <View style={{
-
       backgroundColor: theme.themeColor,
       flexDirection: 'row',
       alignItems: 'center',
-      
       height: (Platform.OS === 'ios')?GlobalStyles.nav_bar_height_ios:GlobalStyles.nav_bar_height_android,
     }}>
       {backButton}
@@ -174,6 +174,7 @@ class SearchPage extends Component {
 
   //复用最热那里代码
   renderItem(data){
+
     //Alert.alert(data);
     const {theme} = this.props;
     const item = data.item;
@@ -192,7 +193,10 @@ class SearchPage extends Component {
   }
 
   render(){
+
     const {isLoading,projectModels,showBottomButton,hideLoadingMore} = this.props.search;
+    // console.log('projectModels')
+    // console.log(projectModels)
     const {theme} = this.params;
     let statusBar=null;
     if(Platform.OS === 'ios'){
@@ -336,5 +340,10 @@ const styles = StyleSheet.create({
       borderRadius: 3,
       opacity: 0.7,
       color: 'white',
+  },
+  title: {
+      fontSize: 18,
+      color: "white",
+      fontWeight: '500'
   },
 });
