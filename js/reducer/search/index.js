@@ -4,7 +4,7 @@ const defaultState = {
   showText:'搜索',
   items:[],
   isLoading:false,
-  projectModes:[],
+  projectModels:[],
   hideLoadingMore:true,
   showBottomButton:false,
 };
@@ -22,6 +22,7 @@ popular:{
 ...
 }
 */
+
 export default function onAction(state=defaultState,action){
 
   switch(action.type){
@@ -31,6 +32,7 @@ export default function onAction(state=defaultState,action){
           isLoading:true,
           hideLoadingMore:true,
           showBottomButton:false,
+          showText:'取消',
         };
     case Types.SEARCH_REFRESH_SUCCESS://下拉刷新
         return {

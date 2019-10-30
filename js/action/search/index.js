@@ -56,7 +56,7 @@ function hasCancel(token,isRemove){
 
 //检查key是否存在于keys中
 function checkKeyIsExist(keys,key){
-  debugger
+
   for(let i = 0,l=keys.length;i<l;i++){
     if(key.toLowerCase() === keys[i].name.toLowerCase())return true;
   }
@@ -68,12 +68,12 @@ function checkKeyIsExist(keys,key){
 export function onSearchCancel(token){
   return dispatch=>{
     CANCEL_TOKENS.push(token);
-    dispatch({types:Types.SEARCH_CANCEL});
+    dispatch({type:Types.SEARCH_CANCEL});
   }
 }
 
 //上拉加载更多
-function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack){
+export function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack){
   return dispatch => {
     setTimeout(()=>{
       if((pageIndex-1)*pageSize>=dataArray.length){
@@ -81,7 +81,7 @@ function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack
           callBack('没有更多了')
         }
         dispatch({
-          type:Types.POPULAR_LOAD_MORE_FAIL,
+          type:Types.SEARCH_LOAD_MORE_FAIL,
           error:'没有更多了',
           pageIndex:--pageIndex,
         })
@@ -91,8 +91,8 @@ function onLoadMoreSearch(pageIndex,pageSize,dataArray = [],favoriteDao,callBack
         let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex;
         _projectModels(dataArray.slice(0, max),favoriteDao,data=>{
             dispatch({
-                type: Types.POPULAR_LOAD_MORE_SUCCESS,
-                storeName,
+                type: Types.SEARCH_LOAD_MORE_SUCCESS,
+
                 pageIndex,
                 projectModels: data, //此处不要改成projectModels 上拉更多有问题 对应page中从store中取出data={store.projectModes}
             })

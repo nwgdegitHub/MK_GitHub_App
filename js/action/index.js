@@ -16,5 +16,5 @@ export default {
   onLoadLanguage,
   onSearch,
   onSearchCancel,
-  onLoadMoreSearch
+  onLoadMoreSearch,
 }

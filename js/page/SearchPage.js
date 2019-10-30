@@ -66,21 +66,25 @@ class SearchPage extends Component {
   }
 
   loadData(loadMore){
+
     const {onSearch,onLoadMoreSearch,search,keys} = this.props;
+
     if(loadMore){
-        onLoadMoreSearch(search.pageIndex,pageSize,search.items,this.favoriteDao,callback=>{
-          this.refs.toast.show('没有更多了');
+      debugger
+        onLoadMoreSearch(++search.pageIndex,pageSize,search.items,this.favoriteDao,callback=>{
+          this.toast.show('没有更多了');
       });
     }
     else
     {
       onSearch(this.inputKey,pageSize,this.searchToken = new Date().getTime(),this.favoriteDao,keys,message=>{
-        this.refs.toast.show(message);
+        this.toast.show(message);
       });
     }
   }
 
   onBackPress(){
+
     const {onSearchCancel,onLoadLanguage} = this.props;
     onSearchCancel(); //推出时取消搜索
     this.refs.input.blur();
@@ -91,15 +95,15 @@ class SearchPage extends Component {
     return true;
   }
 
-  genIndicator(){
-    const {search} = this.props;
-    return search.hideLoadingMore?null:
-    <View>
-      <ActivityIndicator
-        style={styles.indicator}
-      />
-      <Text>正在加载更多</Text>
-    </View>
+  genIndicator() {
+      const {search} = this.props;
+      return search.hideLoadingMore ? null :
+          <View style={styles.indicatorContainer}>
+              <ActivityIndicator
+                  style={styles.indicator}
+              />
+              <Text>正在加载更多</Text>
+          </View>
   }
 
 
@@ -144,7 +148,7 @@ class SearchPage extends Component {
     let inputView = <TextInput
       ref = "input"
       placeholder={placeholder}
-      onChangetext={text=>this.inputKey = text}
+      onChangeText={text=>this.inputKey = text}
       style={styles.textInput}
     ></TextInput>;
 
@@ -164,6 +168,7 @@ class SearchPage extends Component {
       backgroundColor: theme.themeColor,
       flexDirection: 'row',
       alignItems: 'center',
+
       height: (Platform.OS === 'ios')?GlobalStyles.nav_bar_height_ios:GlobalStyles.nav_bar_height_android,
     }}>
       {backButton}
@@ -255,15 +260,16 @@ class SearchPage extends Component {
       animating={isLoading}
     />:null;
 
-    let resultView = <View>
+    let resultView = <View style={{flex: 1}}>
       {indicatorView}
       {listView}
     </View>
     return (
 
       <View style={styles.container}>
-        {this.renderNavBar()}
+
         {statusBar}
+        {this.renderNavBar()}
         {resultView}
         {bottomButton}
         <Toast ref={toast => {this.toast = toast}}/>
@@ -274,20 +280,21 @@ class SearchPage extends Component {
 
 }
 
-const mapPopularStateToProps = state => ({
+const mapStateToProps = state => ({
   keys:state.language.keys,
   search:state.search,
+  theme:state.theme.theme,
 });
 
-const mapPopularDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
   onSearch:(inputKey,pageSize,token,favoriteDao,popularKeys,callback)=>dispatch(actions.onSearch(inputKey,pageSize,token,favoriteDao,popularKeys,callback)),
   onSearchCancel:(token) => dispatch(actions.onSearchCancel(token)),
-  onLoadMoreSearch:(pageIndex,pageSize,dataArray,favoriteDao,callback) =>dispatch(actions.onLoadMoreSearch(pageIndex,pageSize,dataArray,favoriteDao,callback)),
-  onLoadLanguage:(flag) => dispatch(actions.onLoadLanguage(flag))
+  onLoadMoreSearch:(pageIndex,pageSize,dataArray,favoriteDao,callback)=>dispatch(actions.onLoadMoreSearch(pageIndex,pageSize,dataArray,favoriteDao,callback)),
+  onLoadLanguage:(flag) => dispatch(actions.onLoadLanguage(flag)),
 
 });
 
-export default connect(mapPopularStateToProps,mapPopularDispatchToProps)(SearchPage);
+export default connect(mapStateToProps,mapDispatchToProps)(SearchPage);
 
 const styles = StyleSheet.create({
   container:{
@@ -325,8 +332,12 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     top:GlobalStyles.window_height - 45,
   },
-  indicator:{
-
+  indicatorContainer: {
+      alignItems: "center"
+  },
+  indicator: {
+      color: 'red',
+      margin: 10
   },
   textInput: {
       flex: 1,
@@ -345,5 +356,10 @@ const styles = StyleSheet.create({
       fontSize: 18,
       color: "white",
       fontWeight: '500'
+  },
+  centering: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
   },
 });

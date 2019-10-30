@@ -14,7 +14,7 @@ export default{
     flex:1,
     backgroundColor:BACKGROUP_COLOR,
   },
-  nav_bar_height_ios:88,
+  nav_bar_height_ios:44,
   nav_bar_height_android:100,
   backgroundColor:BACKGROUP_COLOR,
   window_height:height,

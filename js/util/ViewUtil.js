@@ -72,7 +72,7 @@ export default class ViewUtil{
   //     </View>)
   // }
 
-  static getLeftBackButton(theme,callBack) {
+  static getLeftBackButton(callBack) {
       return <TouchableOpacity
           style={{padding: 8, paddingLeft: 12}}
           onPress={callBack}>
